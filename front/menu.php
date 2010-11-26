@@ -39,7 +39,7 @@ commonHeader($LANG['plugin_order']['title'][1], '', "plugins", "order", "menu");
 
 $PluginOrderOrder = new PluginOrderOrder();
 $PluginOrderReference = new PluginOrderReference();
-$PluginOrderBudget = new PluginOrderBudget();
+$Budget = new Budget();
 
 if ($PluginOrderOrder->canView() || $PluginOrderReference->canView() || $PluginOrderBudget->canView()) {
 	echo "<div class='center'>";
@@ -58,7 +58,7 @@ if ($PluginOrderOrder->canView() || $PluginOrderReference->canView() || $PluginO
 		echo "<td><a href='reference.php'>" . $LANG['plugin_order']['menu'][2] . "</a></td></tr>";
 	}
 
-	if ($PluginOrderBudget->canView()) {
+	if ($Budget->canView()) {
 		echo "<tr class='tab_bg_1' align='center'>";
 		echo "<td><img src='../pics/budget-icon.png'></td>";
 		//echo "<td><a href='budget.php'>" . $LANG['plugin_order']['menu'][3] . "</a></td></tr>";
