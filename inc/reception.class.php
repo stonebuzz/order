@@ -113,7 +113,7 @@ class PluginOrderReception extends CommonDBTM {
       
       if ($detail->fields["itemtype"] == 'SoftwareLicense') {
       
-         $result=$PluginOrderOrder_Item->queryRef($_POST["plugin_order_orders_id"],$detail->fields["plugin_order_references_id"],$detail->fields["price_taxfree"],$detail->fields["discount"],PluginOrderOrder::ORDER_DEVICE_DELIVRED);
+         $result=$detail->queryRef($_POST["plugin_order_orders_id"],$detail->fields["plugin_order_references_id"],$detail->fields["price_taxfree"],$detail->fields["discount"],PluginOrderOrder::ORDER_DEVICE_DELIVRED);
          $nb = $DB->numrows($result);
          
          if ($nb) {
@@ -498,6 +498,7 @@ class PluginOrderReception extends CommonDBTM {
             if ($val == 1) {
                if ($params["itemtype"][$key] == 'SoftwareLicense') {
                   $this->receptionAllItem($key,$params["plugin_order_references_id"][$key], $params["plugin_order_orders_id"], $params["delivery_date"], $params["delivery_number"], $params["plugin_order_deliverystates_id"]);
+                  $plugin_order_orders_id = $params["plugin_order_orders_id"];
                } else {
                   if ($detail->getFromDB($key)) {
                      if (!$plugin_order_orders_id)
