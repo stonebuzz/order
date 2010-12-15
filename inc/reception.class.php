@@ -477,7 +477,6 @@ class PluginOrderReception extends CommonDBTM {
       if ($nb) {
          for ($i = 0; $i < $nb; $i++) {
             $detailID = $DB->result($result, $i, 'id');
-            $detail = new PluginOrderDetail;
             $input["id"] = $detailID;
             $input["delivery_date"] = $delivery_date;
             $input["states_id"] = PluginOrderOrder::ORDER_DEVICE_DELIVRED;
