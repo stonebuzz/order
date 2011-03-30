@@ -313,6 +313,19 @@ class PluginOrderOrder extends CommonDBTM {
 
       return $input;
    }
+   
+   function prepareInputForUpdate($input) {
+		global $LANG;
+      
+      $ORDER_VALIDATION_STATUS = array (self::ORDER_STATUS_DRAFT,
+                                    self::ORDER_STATUS_WAITING_APPROVAL);
+                                    
+		if (isset ($this->fields["states_id"]) && !in_array($this->fields["states_id"], $ORDER_VALIDATION_STATUS)) {
+         addMessageAfterRedirect($LANG['plugin_order']['status'][14], false, ERROR);
+         return array ();
+      }
+		return $input;
+	}
 
    function showForm ($ID, $options=array()) {
       global $CFG_GLPI, $LANG;
