@@ -539,7 +539,7 @@ class PluginOrderReception extends CommonDBTM {
       $detail = new PluginOrderOrder_Item;
       $detail->getFromDB($detailID);
       
-      $result=$PluginOrderOrder_Item->queryRef($_POST["plugin_order_orders_id"],
+      $result=$detail->queryRef($_POST["plugin_order_orders_id"],
                                                $plugin_order_references_id,
                                                $detail->fields["price_taxfree"],
                                                $detail->fields["discount"],
@@ -550,7 +550,6 @@ class PluginOrderReception extends CommonDBTM {
       if ($nb) {
          for ($i = 0; $i < $nb; $i++) {
             $detailID = $DB->result($result, $i, 'id');
-            $detail = new PluginOrderDetail;
             $input["id"] = $detailID;
             $input["delivery_date"] = $delivery_date;
             $input["states_id"] = PluginOrderOrder::ORDER_DEVICE_DELIVRED;
