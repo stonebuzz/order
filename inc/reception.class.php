@@ -360,9 +360,13 @@ class PluginOrderReception extends CommonDBTM {
                $detailID = $data["IDD"];
 
                echo "<tr class='tab_bg_2'>";
+               
+               $status = 1;
+               if ($typeRef != 'SoftwareLicense') {
+                  $status = $this->checkThisItemStatus($detailID,PluginOrderOrder::ORDER_DEVICE_NOT_DELIVRED);
+               }
                if ($canedit 
-                     && $this->checkThisItemStatus($detailID,
-                                                   PluginOrderOrder::ORDER_DEVICE_NOT_DELIVRED)) {
+                     && $status) {
                   echo "<td width='15' align='left'>";
                   $sel = "";
                   if (isset ($_GET["select"]) && $_GET["select"] == "all")
@@ -576,6 +580,7 @@ class PluginOrderReception extends CommonDBTM {
                                           $params["plugin_order_orders_id"], 
                                           $params["delivery_date"], $params["delivery_number"],
                                           $params["plugin_order_deliverystates_id"]);
+                  $plugin_order_orders_id = $params["plugin_order_orders_id"];
                } else {
                   if ($detail->getFromDB($key)) {
 

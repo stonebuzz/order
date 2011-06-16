@@ -167,7 +167,7 @@ class PluginOrderOrder_Item extends CommonDBTM {
             $input["itemtype"]                   = $itemtype;
             $input["price_taxfree"]              = $price;
             $input["price_discounted"]           = $price - ($price * ($discounted_price / 100));
-            $input["states_id"]                  = PluginOrderOrder::ORDER_STATUS_DRAFT;
+            $input["states_id"]                  = PluginOrderOrder::ORDER_DEVICE_NOT_DELIVRED;
 
             $input["price_ati"]                  = $this->getPricesATI($input["price_discounted"], 
                                                                        Dropdown::getDropdownName("glpi_plugin_order_ordertaxes",
@@ -507,12 +507,16 @@ class PluginOrderOrder_Item extends CommonDBTM {
                 FROM `".$this->getTable()."`
                 WHERE `plugin_order_orders_id` = '$plugin_order_orders_id'";
       $result = $DB->query($query);
+      $number = $DB->numrows($result);
+      
       $all_delivered = true;
-
+      
+      if ($number) {
       while ($data = $DB->fetch_array($result))
          if (!$data["states_id"])
             $all_delivered = false;
-
+      }
+      
       if ($all_delivered 
             && $order->fields["states_id"] != PluginOrderOrder::ORDER_STATUS_COMPLETLY_DELIVERED)
          $order->updateOrderStatus($plugin_order_orders_id, 
