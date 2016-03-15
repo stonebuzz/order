@@ -82,8 +82,6 @@ function plugin_init_order() {
          'PluginOrderOther',
          'SoftwareLicense',
       );
-      
-      $CFG_GLPI['plugin_order_types'] = $ORDER_TYPES;
 
       $PLUGIN_HOOKS['pre_item_purge']['order']  = array(
          'Profile'          => array('PluginOrderProfile', 'purgeProfiles'),
