@@ -814,8 +814,7 @@ class PluginOrderOrder extends CommonDBTM {
       }
       echo "</td>";
       echo "</tr>";
-// ************************************************************************************************
-      // ADD PAYMENT ADDRESS HERE
+      // Payment address
       echo "<tr class='tab_bg_1'><td>" . __("Invoice address", "order") . ":</td>";
       echo "<td>";
       if ($canedit) {
@@ -828,7 +827,6 @@ class PluginOrderOrder extends CommonDBTM {
          echo Dropdown::getDropdownName("glpi_locations", $this->fields["locations_id"]);
       }
       echo '</td></tr>';
-// ************************************************************************************************
       /* supplier of order */
       echo "<tr class='tab_bg_1'><td>" . __("Supplier") . ": </td>";
       echo "<td>";
