@@ -814,7 +814,24 @@ class PluginOrderOrder extends CommonDBTM {
       }
       echo "</td>";
       echo "</tr>";
-
+// ************************************************************************************************
+      // ADD PAYMENT LOCATION HERE
+      echo "<tr class='tab_bg_1'><td>Lieu de facturation:</td>";
+      echo "<td>Zone déjà existante dans la version 9.1</td>";
+      // ADD PAYMENT ADDRESS HERE
+      echo "<td>Adresse de facturation:</td>";
+      echo "<td>";
+      if ($canedit) {
+         Location::Dropdown(array(
+            'name'   => "payment_address_id",
+            'value'  => $this->fields["payment_address_id"],
+            'entity' => $this->fields["entities_id"],
+         ));
+      } else {
+         echo Dropdown::getDropdownName("glpi_locations", $this->fields["locations_id"]);
+      }
+      echo '</td></tr>';
+// ************************************************************************************************
       /* supplier of order */
       echo "<tr class='tab_bg_1'><td>" . __("Supplier") . ": </td>";
       echo "<td>";
@@ -2133,6 +2150,7 @@ class PluginOrderOrder extends CommonDBTM {
                `plugin_order_ordertypes_id` int (11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_order_ordertypes (id)',
                `date_mod` datetime default NULL,
                `is_helpdesk_visible` tinyint(1) NOT NULL default '1',
+               `payment_address_id` int(11) NOT NULL,
                PRIMARY KEY  (`id`),
                KEY `name` (`name`),
                KEY `entities_id` (`entities_id`),
