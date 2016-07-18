@@ -815,11 +815,8 @@ class PluginOrderOrder extends CommonDBTM {
       echo "</td>";
       echo "</tr>";
 // ************************************************************************************************
-      // ADD PAYMENT LOCATION HERE
-      echo "<tr class='tab_bg_1'><td>Lieu de facturation:</td>";
-      echo "<td>Zone déjà existante dans la version 9.1</td>";
       // ADD PAYMENT ADDRESS HERE
-      echo "<td>Adresse de facturation:</td>";
+      echo "<tr><td>Adresse de facturation:</td>";
       echo "<td>";
       if ($canedit) {
          Location::Dropdown(array(
