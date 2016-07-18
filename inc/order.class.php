@@ -816,7 +816,7 @@ class PluginOrderOrder extends CommonDBTM {
       echo "</tr>";
 // ************************************************************************************************
       // ADD PAYMENT ADDRESS HERE
-      echo "<tr><td>Adresse de facturation:</td>";
+      echo "<tr class='tab_bg_1'><td>" . __("Invoice address", "order") . ":</td>";
       echo "<td>";
       if ($canedit) {
          Location::Dropdown(array(
