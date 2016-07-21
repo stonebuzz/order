@@ -50,7 +50,7 @@ if (isset($_POST['budgets_id']) &&
         Location::Dropdown(array(
            'name'   => "payment_locations_id",
            'value'  => $_POST['payment_locations_id'],
-           'entity' => $_POST['entity'],
+           'entity' => $_POST['entities_id'],
            'rand'   => $_POST['rand'],
         ));
 } else {
