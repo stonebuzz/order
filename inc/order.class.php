@@ -838,7 +838,7 @@ class PluginOrderOrder extends CommonDBTM {
         Location::Dropdown(array(
            'name'   => "payment_locations_id",
            'value'  => $this->fields['payment_locations_id'],
-           'entity' => 0,
+           'entity' => $this->fields['entity'],
            'rand'   => $rand,
         ));
       } else {
