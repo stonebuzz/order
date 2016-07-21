@@ -831,6 +831,8 @@ class PluginOrderOrder extends CommonDBTM {
         $budget = new Budget();
         $budget->getFromDB($this->fields['budgets_id']);
         // Get selected budget's location
+        $locations_id = $budget->fields["locations_id"];
+        echo "<input type='hidden' name='payment_locations_id' value='$locations_id' />";
         echo Dropdown::getDropdownName("glpi_locations",  $budget->fields["locations_id"]);
       } elseif (isset($this->fields['payment_locations_id']) &&
                 $this->fields['payment_locations_id'] !== '' &&
