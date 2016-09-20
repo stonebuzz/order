@@ -552,6 +552,7 @@ class PluginOrderOrder extends CommonDBTM {
    }
 
    public function prepareInputForAdd($input) {
+      Session::addMessageAfterRedirect($input["payment_locations_id"], false, ERROR);
       if (isset($input['is_template']) && $input['is_template'] == 1) {
          return $input;
       }
@@ -566,6 +567,13 @@ class PluginOrderOrder extends CommonDBTM {
             return array ();
          } elseif (!isset ($input["name"]) || $input["name"] == '') {
             $input["name"] = $input["num_order"];
+         }
+
+         if (!isset ($input["payment_locations_id"]) ||
+                     $input["payment_locations_id"] == '' ||
+                     $input["payment_locations_id"] == 0) {
+            Session::addMessageAfterRedirect(__("An invoice location is mandatory !", "order"), false, ERROR);
+            return array ();
          }
 
          if( isset($input['budgets_id']) && $input['budgets_id'] > 0) {
@@ -768,6 +776,7 @@ class PluginOrderOrder extends CommonDBTM {
             $restrict = "";
          }
 
+         $rand = mt_rand();
          Budget::Dropdown(array(
             'name'      => "budgets_id",
             'value'     => $this->fields["budgets_id"],
@@ -775,6 +784,7 @@ class PluginOrderOrder extends CommonDBTM {
             'comments'  => true,
             'condition' => $restrict,
             'width'     => '150px',
+            'rand'      => $rand,
          ));
       } else {
          $budget = new Budget();
@@ -786,6 +796,82 @@ class PluginOrderOrder extends CommonDBTM {
          }
       }
       echo "</td></tr>";
+
+      // Payment address
+      echo "<tr><td>" . __("Invoice address", "order") . ":</td><td>";
+      if ($canedit) {
+         Location::Dropdown(array(
+            'name'   => "payment_address_id",
+            'value'  => $this->fields["payment_address_id"],
+            'entity' => $this->fields["entities_id"],
+         ));
+      }
+      else {
+         echo Dropdown::getDropdownName("glpi_locations", $this->fields["locations_id"]);
+      }
+      echo '</td>';
+
+      // Payment location (production site)
+      echo "<td>" . __("Invoice location", "order");
+      if ($ID > 0) {
+         echo "*";
+      } else {
+         echo "<span class='red'>*</span>";
+      }
+      echo ":</td><td><span id='dropdown_location'>";
+
+      //     If a budget is selected display location name from budget's locations_id...
+      // ... Else, if no budget was selected and a payment_locations_id is set,
+      //     display locations list with location's name pre-selected from payment_locations_id ...
+      // ... Else, display locations list with EMPTY_VALUE pre-selected
+      if (isset($this->fields['budgets_id']) &&
+                $this->fields['budgets_id'] !== '' &&
+                $this->fields['budgets_id'] > 0) {
+        // Get selected budget
+        $budget = new Budget();
+        $budget->getFromDB($this->fields['budgets_id']);
+        // Get selected budget's location
+        $locations_id = $budget->fields["locations_id"];
+        echo "<input type='hidden' name='payment_locations_id' value='$locations_id' />";
+        echo Dropdown::getDropdownName("glpi_locations",  $budget->fields["locations_id"]);
+      } elseif (isset($this->fields['payment_locations_id']) &&
+                $this->fields['payment_locations_id'] !== '' &&
+                $this->fields['payment_locations_id'] !== '0') {
+        Location::Dropdown(array(
+           'name'   => "payment_locations_id",
+           'value'  => $this->fields['payment_locations_id'],
+           'entity' => $this->fields['entities_id'],
+           'rand'   => $rand,
+        ));
+      } else {
+        Location::Dropdown(array(
+           'name'   => "payment_locations_id",
+           'value'  => Dropdown::EMPTY_VALUE,
+           'entity' => 0,
+           'rand'   => $rand,
+        ));
+      }
+
+      // AJAX listener params
+      $params = array(
+         'fieldname'             => 'payment_locations_id',
+         'payment_locations_id'  => $this->fields["payment_locations_id"],
+         'entities_id'           => $this->fields["entities_id"],
+         'is_recursive'          => $this->fields["is_recursive"],
+         'budgets_id'            => '__VALUE__', // Get budget's id from select
+         'rand'                  => $rand,
+      );
+
+      // AJAX listener:
+      // Listen to "dropdown_budgets_id",
+      // Update "dropdown_location",
+      // Execute script "dropdownLocation.php",
+      // With "$params" as parameters
+      Ajax::updateItemOnSelectEvent("dropdown_budgets_id$rand",
+                                    "dropdown_location",
+                                    '../ajax/dropdownLocation.php',
+                                    $params);
+      echo "</span></td></tr>";
 
       /* location */
       echo "<tr class='tab_bg_1'><td>" . __("Delivery location", "order") . ": </td>";
@@ -814,7 +900,6 @@ class PluginOrderOrder extends CommonDBTM {
       }
       echo "</td>";
       echo "</tr>";
-
       /* supplier of order */
       echo "<tr class='tab_bg_1'><td>" . __("Supplier") . ": </td>";
       echo "<td>";
@@ -2133,6 +2218,8 @@ class PluginOrderOrder extends CommonDBTM {
                `plugin_order_ordertypes_id` int (11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_order_ordertypes (id)',
                `date_mod` datetime default NULL,
                `is_helpdesk_visible` tinyint(1) NOT NULL default '1',
+               `payment_address_id` int(11) NOT NULL,
+               `payment_locations_id` int(11) NOT NULL,
                PRIMARY KEY  (`id`),
                KEY `name` (`name`),
                KEY `entities_id` (`entities_id`),
