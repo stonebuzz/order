@@ -884,3 +884,11 @@ msgstr ""
 #, php-format
 msgid "Cannot copy file %1$s to %2$s"
 msgstr ""
+
+#: inc/order.class.php:805
+msgid "Invoice location"
+msgstr ""
+
+#: front/orderform.php:49 #: front/orderform.php:92
+msgid "Please select an invoice location"
+msgstr ""

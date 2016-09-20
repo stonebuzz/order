@@ -883,3 +883,15 @@ msgstr "Non posso creare la cartella"
 #, php-format
 msgid "Cannot copy file %1$s to %2$s"
 msgstr "Non posso copiare il file %1$s in %2$s"
+
+#: report/orderdelivery/orderdelivery.php:47
+msgid "orderdelivery_report_title"
+msgstr ""
+
+#: inc/order.class.php:805
+msgid "Invoice location"
+msgstr ""
+
+#: front/orderform.php:49 #: front/orderform.php:92
+msgid "Please select an invoice location"
+msgstr ""
