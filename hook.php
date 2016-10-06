@@ -50,7 +50,8 @@ function plugin_order_install() {
                     'PluginOrderOrder_Supplier', 'PluginOrderBill', 'PluginOrderOrderPayment',
                     'PluginOrderOrderType', 'PluginOrderOther', 'PluginOrderOtherType',
                     'PluginOrderPreference', 'PluginOrderProfile', 'PluginOrderReference_Supplier',
-                    'PluginOrderSurveySupplier', 'PluginOrderOrderTax', 'PluginOrderDocumentCategory');
+                    'PluginOrderSurveySupplier', 'PluginOrderOrderTax', 'PluginOrderDocumentCategory',
+                    'PluginOrderAccountingSection');
    foreach ($classes as $class) {
       if ($plug=isPluginItemType($class)) {
          $plugname=strtolower($plug['plugin']);
@@ -106,7 +107,8 @@ function plugin_order_getDropdown() {
                     'PluginOrderDeliveryState'    => __("Delivery status", "order"),
                     'PluginOrderBillState'        => __("Bill status", "order"),
                     'PluginOrderBillType'         => __("Bill type", "order"),
-                    'PluginOrderDocumentCategory' => __("Orders", "order"));
+                    'PluginOrderDocumentCategory' => __("Orders", "order"),
+                    'PluginOrderAccountingSection' => __("Accounting Section", "order"));
    } else {
       return array ();
    }
