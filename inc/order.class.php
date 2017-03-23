@@ -1980,7 +1980,7 @@ class PluginOrderOrder extends CommonDBTM {
 
          }
 
-         $total = $total -$data["port_price"];
+         $total = $total  + $data["port_price"];
          echo "</table></div>";
 
          echo "<br><div class='center'>";
