@@ -1667,9 +1667,6 @@ class PluginOrderOrder extends CommonDBTM {
                'comment_order'         => $this->fields["comment"],
             ];
 
-            $entity = new Entity();
-            $entity->getFromDB($this->fields["entities_id"]);
-            $town   = '';
 
             $locationPaymentAdress = new Location();
             if ($locationPaymentAdress->getFromDB($this->fields["payment_address_id"])) {
@@ -1695,13 +1692,10 @@ class PluginOrderOrder extends CommonDBTM {
                $values['comment_delivery_address'] = $location->fields['completename']."\n".$location->fields['comment'];
             }
 
-            if ($town) {
-               $town = $town.", ";
-            }
             $order_date = Html::convDate($this->fields["order_date"]);
             $username   = Html::clean(getUserName(Session::getLoginUserID()));
 
-            $values['title_date_order'] = $town.__("The", "order")." ";
+            $values['title_date_order'] = __("The", "order")." ";
             $values['date_order']       = $order_date;
             $values['title_sender']     = __("Issuer order", "order");
             $values['sender']           = $username;
