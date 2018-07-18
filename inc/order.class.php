@@ -845,7 +845,7 @@ class PluginOrderOrder extends CommonDBTM {
             'condition' => $restrict,
             'width'     => '150px',
             'rand'   => $rand,
-         ));
+         ]);
       } else {
          $budget = new Budget();
          if ($this->fields["budgets_id"] > 0
